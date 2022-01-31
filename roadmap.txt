@@ -1,0 +1,19 @@
+week 1 = Gathering knowledge about the tools we will need or looking for a data set.
+
+week 2 = Data set has been selected and cleaning process starded, and studies on how to use github were also started
+
+week 3 = Studies in how to use NLP to study the data set and how to implement it.
+
+week 4 = NLP analysis started on the data set
+
+week 5 = Preparation for starting the analysis of the Data set and for the Presentation
+
+week 6 = Producing the firsts plots from the dataset
+
+week 7 = 
+
+week 8 = 
+
+week 9 = 
+
+week 10 = 
