@@ -46,11 +46,8 @@ stopw = stopwords.words('english')
 #df_stopwords['text'] = df_stopwords['text'].apply(lambda x: ' '.join([word for word in 
 #                                                      x.split() if word not in (stopw)]))  
 #spliting datasets:
-
-df_reliable = df.drop(df[df.label == 0].index)
-df_unreliable = df.drop(df[df.label == 1].index)
                             
-# tokenization and spliting datasets:
+############################ tokenization and spliting datasets:
     
 df_token = df
 
