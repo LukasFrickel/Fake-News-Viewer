@@ -1,0 +1,57 @@
+# -*- coding: utf-8 -*-
+"""
+@author: Mimi Nguyen
+"""
+#libraries importieren
+import pandas as pd
+from string import punctuation
+import re
+import nltk
+from nltk.corpus import stopwords
+stopword = nltk.corpus.stopwords.words('english')
+from nltk.stem import WordNetLemmatizer 
+
+#dataset einfügen
+df = pd.read_csv('D:\\Uni\\fakenewsdata\\train.csv')
+print(df.head())
+
+#nicht benötigte columns entfernen
+entfernen = ['id','author']
+df.drop(entfernen, inplace=True, axis=1)
+print(df.head())
+
+#alles in kleinschrift
+df['title'] = df['title'].str.lower()
+df['text'] = df['text'].str.lower()
+
+#funktion um punctuations zu entfernen
+def punct_entf(text):                                                      
+    ohnepunct ="".join(words for words in str(text) if words not in punctuation)
+    return ohnepunct
+
+df['titelohnepunct'] = df['title'].apply(lambda x: punct_entf(x))
+df['textohnepunct'] = df['text'].apply(lambda x: punct_entf(x))
+
+#funktion tokenization satz in eine liste mit wörtern teilen 
+def tokenize(text):
+    split = re.split("\W+",text) 
+    return split
+
+df['textohnepuncttoken'] = df['textohnepunct'].apply(lambda x: tokenize(x.lower()))
+df['titelohnepuncttoken'] = df['titelohnepunct'].apply(lambda x: tokenize(x.lower()))
+
+#funktion um stopwords entfernen 
+def remove_stopwords(text):
+    text=[word for word in text if word not in stopwords]
+    return text
+    df['textohnepuncttokenstop'] = df['textohnepuncttoken'].apply(lambda x: remove_stopwords(x))
+    df['titelohnepuncttokenstop'] = df['titelohnepuncttoken'].apply(lambda x: remove_stopwords(x))
+    
+#funktion lemmatizing stammwort 
+lemmatizer = WordNetLemmatizer()
+df['textohnepuncttokenlemma'] = ' '.join([lemmatizer.lemmatize(w) for w in df['textohnepuncttoken']])
+df['titelohnepuncttokenlemma'] = ' '.join([lemmatizer.lemmatize(w) for w in df['titelohnepuncttoken']])
+
+#print cleaned data 
+print(df['textohnepuncttokenlemma'])
+print(df['titelohnepuncttokenlemma'])
