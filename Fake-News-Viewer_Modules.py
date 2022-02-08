@@ -82,45 +82,10 @@ uncleaned_fdist_text_unreliable_plot = frequences.dist_freq_plot(uncleaned_fdist
 
 ############################ removing stopwords, numbers and punctuations
 
-stopw = stopwords.words('english')
-
-new_stepw = list()
-
-for word in stopw:
-    if "'" in word:
-        word_new1 = word.replace("'","’")
-        word_new2 = word.replace("'","‘")
-        new_stepw.append(word_new1)
-        new_stepw.append(word_new2)
-
-stopw.extend(new_stepw)
-
-df_stopwords = df.applymap(lambda x: x.lower() if type(x) == str else x)
-
-punct = string.punctuation
-punct = punct + "‘" + "’" + '“' + '”' + '—' + "–"
-
-def clean_punctuations(text):
-    
-    text = re.sub('[%s]' % punct, '', text)
-
-    return(text)
-
-def clean_numbers(text):
-    
-    text = re.sub(r'[0-9]', '', text)
-
-    return(text)
-
-#cleaning title
-
 df_stopwords['title'] = df_stopwords['title'].apply(lambda x: cleaning.clean_numbers(x))
 df_stopwords['title'] = df_stopwords['title'].apply(cleaning.clean_steapwords())
 df_stopwords['title'] = df_stopwords['title'].apply(lambda x: cleaning.clean_punctuations(x))
 
-
-
-#cleaning text
 
 df_stopwords['text'] = df_stopwords['text'].apply(lambda x: cleaning.clean_numbers(x))
 df_stopwords['text'] = df_stopwords['text'].apply(cleaning.clean_steapwords())
