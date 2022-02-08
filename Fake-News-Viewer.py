@@ -13,7 +13,6 @@ from nltk.stem import SnowballStemmer
 import re
 import string
 from nltk import ne_chunk
-import matplotlib.pyplot as plt
 
 #nltk.download('all')
 
