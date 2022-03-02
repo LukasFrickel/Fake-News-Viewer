@@ -15,6 +15,11 @@ import re
 import string
 from nltk import ne_chunk
 
+
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.cross_validation import train_test_split
+from sklearn.naice_bayes import MultinomialNB
+
 ############################ Importing user modules
 
 import Modules_User.cleaning as cleaning 
@@ -22,7 +27,6 @@ import Modules_User.frequences as frequences
 
 #nltk.download('all')
 
-#path_train = 'C:/Users/Francisco Riel Neto/Desktop/Github/Fake-News-Viewer/fake-news/train.csv'
 path_train = 'C:/Users/franc/Desktop/TechLabs/fake-news/train.csv'
 
 df = pd.read_csv(path_train)
@@ -82,6 +86,20 @@ uncleaned_fdist_text_unreliable_plot = frequences.dist_freq_plot(uncleaned_fdist
 
 ############################ removing stopwords, numbers and punctuations
 
+df_stopwords = pd.read_csv(path_train)
+df_stopwords = df_stopwords[df_stopwords['text'].notna()]
+df_stopwords.reset_index(drop=True, inplace=True)  
+df_stopwords['title'] = df_stopwords['title'].fillna('None')
+df_stopwords['author'] = df_stopwords['author'].fillna('None')
+df_stopwords = df_stopwords[df_stopwords['text'].notna()]
+df_stopwords.reset_index(drop=True, inplace=True)
+    
+df_stopwords['title'] = df_stopwords['title'].fillna('None')
+df_stopwords['author'] = df_stopwords['author'].fillna('None')
+df_stopwords = df_stopwords[df_stopwords['text'].notna()]
+df_stopwords.reset_index(drop=True, inplace=True)
+
+
 df_stopwords['title'] = df_stopwords['title'].apply(lambda x: cleaning.clean_numbers(x))
 df_stopwords['title'] = df_stopwords['title'].apply(cleaning.clean_steapwords())
 df_stopwords['title'] = df_stopwords['title'].apply(lambda x: cleaning.clean_punctuations(x))
@@ -91,6 +109,7 @@ df_stopwords['text'] = df_stopwords['text'].apply(lambda x: cleaning.clean_numbe
 df_stopwords['text'] = df_stopwords['text'].apply(cleaning.clean_steapwords())
 df_stopwords['text'] = df_stopwords['text'].apply(lambda x: cleaning.clean_punctuations(x))
 
+df_train = df_stopwords
 
 ############################ tokenization:
     
@@ -200,3 +219,4 @@ df_token_reliable_ne['text'] = df_token_reliable_ne['text'].apply(ne_chunk)
 df_token_unreliable_ne = df_token_unreliable_pos
 df_token_unreliable_ne['title'] = df_token_unreliable_ne['title'].apply(ne_chunk)
 df_token_unreliable_ne['text'] = df_token_unreliable_ne['text'].apply(ne_chunk)
+
