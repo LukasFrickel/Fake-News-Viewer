@@ -1,24 +1,11 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Feb  7 22:29:49 2022
-
-@author: franc
-"""
 ############################ Importing necessaire modules
 
 import pandas as pd
 import nltk
 from nltk import word_tokenize
-from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
-import re
-import string
 from nltk import ne_chunk
-
-
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.cross_validation import train_test_split
-from sklearn.naice_bayes import MultinomialNB
 
 ############################ Importing user modules
 
