@@ -53,13 +53,14 @@ cv = TfidfVectorizer(min_df=1)
 df_X = cv.fit(df_clean['text'])
 df_X = cv.transform(df_clean['text'])
 
+print(df_clean['text'].head())
+
 print('Full vector: ')
 print(df_X.toarray)
 
 df_y = df["label"].values
 
 X_train, X_test, y_train, y_test = train_test_split(df_X, df_y, random_state=0)
-
 
 Models = [LogisticRegression(),
           MultinomialNB(),
@@ -96,18 +97,6 @@ print(df_models)
 best_model = LogisticRegression()
 best_model.fit(X_train, y_train)
 
-############################ save the model to disk
-
-filename = 'finalized_lG_model.sav'
-pickle.dump(best_model , open(filename, 'wb'))
-
-############################ load the model from disk
-
-loaded_model = pickle.load(open(filename, 'rb'))
-result = loaded_model.score(X_test, y_test)
-
-print(result)
-
 ############################ user text
 
 path_user_fake = 'C:/Users/franc/Desktop/TechLabs/GitHub/Fake-News-Viewer/other_data_set/archive/Fake.csv'
@@ -122,7 +111,7 @@ df_user_true = df_user_true["text"].apply(cleaning.clean_steapwords())
 df_user_fake = df_user_fake["text"].apply(cleaning.clean_steapwords())
 
 df_user_true = df_user_true.iloc[0]
-df_user_fake = df_user_fake.iloc[0]
+df_user_fake = df_user_fake.iloc[1]
 
 df_user_true = cleaning.clean_punctuations(df_user_true)
 df_user_true = cleaning.clean_punctuations(df_user_true)
@@ -133,12 +122,10 @@ df_user_fake = cleaning.clean_punctuations(df_user_fake)
 
 ############################ predict user text
 
-cv = TfidfVectorizer(min_df=1)
+X_user_true = cv.transform([df_user_true])
+user_pred_true = best_model.predict(X_user_true)
+print(user_pred_true)
 
-df_user_true = [df_user_true]
-df_user_fake = [df_user_fake]
-
-X_user_true = cv.fit(df_user_true)
-X_user_true = cv.transform(df_user_true)
-
-ynew_true = loaded_model.predict(X_user_true)
+X_user_fake = cv.transform([df_user_fake])
+user_pred_fake = best_model.predict(X_user_fake)
+print(user_pred_fake)
